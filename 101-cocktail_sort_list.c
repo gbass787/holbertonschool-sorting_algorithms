@@ -22,7 +22,7 @@ void cocktail_sort_list(listint_t **list)
 		if (temp->n > iterator->n)
 		{
 			iterator2 = iterator;
-			_swap(temp, iterator);
+			node_swap(temp, iterator);
 			if (*list == temp)
 				*list = iterator;
 			print_list(*list);
@@ -34,7 +34,7 @@ void cocktail_sort_list(listint_t **list)
 			if (temp->n < iterator2->n)
 			{
 				iterator = iterator2;
-				_swap(iterator2, temp);
+				node_swap(iterator2, temp);
 				if (*list == iterator2)
 					*list = temp;
 				print_list(*list);
@@ -47,25 +47,19 @@ void cocktail_sort_list(listint_t **list)
 	}
 }
 /**
- * _swap - swaps nodes
- * @p: prev node
- * @h: current node
- * @head: head of list
+ * node_swap - swap nodes on dlinklist
+ * @first: first node
+ * @second: second node
+ * Return: void
  */
-void _swap(listint_t *p, listint_t *h, listint_t **head)
+void node_swap(listint_t *first, listint_t *second)
 {
-	listint_t *tmp1 = NULL, *tmp2 = NULL;
-
-	tmp1 = p->prev;
-	tmp2 = h->next;
-	if (tmp1)
-		tmp1->next = h;
-	if (tmp2)
-		tmp2->prev = p;
-	if (tmp1 == NULL)
-		*head = h;
-	p->prev = h;
-	p->next = tmp2;
-	h->prev = tmp1;
-	h->next = p;
+	first->next = second->next;
+	second->prev = first->prev;
+	if (second->prev)
+		second->prev->next = second;
+	first->prev = second;
+	if (first->next)
+		first->next->prev = first;
+	second->next = first;
 }
